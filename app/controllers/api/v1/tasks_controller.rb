@@ -27,11 +27,11 @@ module Api
       private
 
       def permitted_params
-        params.require(:task).permit(:title, :description, :due_date)
+        params.require(:task).permit(:title, :status, :description, :due_date)
       end
 
       def update_permitted_params
-        params.require(:task).permit(:title, :description, :due_date)
+        params.require(:task).permit(:title, :status, :description, :due_date)
       end
     end
   end
