@@ -3,7 +3,7 @@
 ## Setup
 
 ```
-$ git clone
+$ git clone git@github.com:XuanTaiDV/system_project_management.git
 $ cd project_management_system
 $ bundle install # install gem
 $ rake db:create # create db
