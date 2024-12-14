@@ -11,7 +11,7 @@ module ErrorHandler
   def handle_exception(exception)
     error = Exceptions.exception_to_error(exception)
 
-    render json: { message: error.message }, status: error.code
+    render json: { message: error.message, details: error.details }.compact, status: error.code
   end
 
 end

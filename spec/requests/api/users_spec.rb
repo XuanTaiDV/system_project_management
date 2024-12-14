@@ -28,24 +28,51 @@ RSpec.describe 'Users API', type: :request do
     end
 
     context 'when the request is invalid' do
-      let(:invalid_attributes) do
-        {
-          user: {
-            email: 'test@example.com',
-            password: 'password123',
-            password_confirmation: 'wrongpassword'
+      context 'when wrong password confirmation' do
+        let(:invalid_attributes) do
+          {
+            user: {
+              email: 'test@example.com',
+              password: 'password123',
+              password_confirmation: 'wrongpassword'
+            }
           }
-        }
+        end
+
+        it 'does not create a user and returns an error message' do
+          post '/api/v1/users/register', params: invalid_attributes
+
+          expect(response).to have_http_status(:unprocessable_entity)
+
+          # Parse the response and check if error messages are included
+          json_response = JSON.parse(response.body)
+          expect(json_response['message']).to include('Unprocessable Entity')
+          expect(json_response['details'].keys).to include('password_confirmation')
+        end
       end
 
-      it 'does not create a user and returns an error message' do
-        post '/api/v1/users/register', params: invalid_attributes
+      context 'when email is already taken' do
+        let!(:user) { FactoryBot.create(:user, email: 'test@example.com') }
+        let(:invalid_attributes) do
+          {
+            user: {
+              email: 'test@example.com',
+              password: 'password123',
+              password_confirmation: 'password123'
+            }
+          }
+        end
 
-        expect(response).to have_http_status(:bad_request)
+        it 'does not create a user and returns an error message' do
+          post '/api/v1/users/register', params: invalid_attributes
 
-        # Parse the response and check if error messages are included
-        json_response = JSON.parse(response.body)
-        expect(json_response['message']).to include("Password confirmation doesn't match Password")
+          expect(response).to have_http_status(:unprocessable_entity)
+
+          # Parse the response and check if error messages are included
+          json_response = JSON.parse(response.body)
+          expect(json_response['message']).to include('Unprocessable Entity')
+          expect(json_response['details'].keys).to include('email')
+        end
       end
     end
   end

@@ -19,12 +19,11 @@ password: 123456
 ```
 ## API
 
-```
-## API Endpoints
 
 ### **User Registration**
 
 #### POST `/api/v1/register`
+```
 
 **Request:**
 - **Authorization:** Not required
@@ -41,12 +40,12 @@ password: 123456
 {
   "email": ""
 }
-
+```
 ---
-
 ### **User Login**
 
 #### POST `/api/v1/login`
+```
 
 **Request:**
 - **Authorization:** Not required
@@ -60,12 +59,12 @@ password: 123456
 {
   "token": ""
 }
-
+```
 ---
-
 ### **Projects**
 
 #### GET `/api/v1/projects`
+```
 
 **Request:**
 - **Headers:**
@@ -84,8 +83,10 @@ password: 123456
     "description": ""
   }
 ]
-
+```
+---
 #### POST `/api/v1/projects`
+```
 
 **Request:**
 - **Headers:**
@@ -105,9 +106,12 @@ password: 123456
   "name": "",
   "description": ""
 }
+```
 
 #### PATCH/PUT `/api/v1/projects/:id`
+---
 
+```
 **Request:**
 - **Headers:**
 {
@@ -124,9 +128,10 @@ password: 123456
   "name": "",
   "description": ""
 }
-
+```
+---
 #### DELETE `/api/v1/projects/:id`
-
+```
 **Request:**
 - **Headers:**
 {
@@ -137,10 +142,11 @@ password: 123456
 HEAD
 
 ---
-
+```
 ### **Tasks**
 
 #### GET `/api/v1/projects/:project_id/tasks`
+```
 
 **Request:**
 - **Headers:**
@@ -159,9 +165,12 @@ HEAD
     "project_id": ""
   }
 ]
-
+```
+---
 #### POST `/api/v1/projects/:project_id/tasks`
 
+```
+
 **Request:**
 - **Headers:**
 {
@@ -186,8 +195,10 @@ HEAD
   "due_date": "",
   "project_id": ""
 }
+```
 
 #### PATCH/PUT `/api/v1/tasks/:id`
+```
 
 **Request:**
 - **Headers:**
@@ -213,3 +224,4 @@ HEAD
   "due_date": "",
   "project_id": ""
 }
+```

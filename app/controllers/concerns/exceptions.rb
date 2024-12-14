@@ -7,10 +7,16 @@ module Exceptions
                   { code: 403, message: "Forbidden" }
                 when Conflict
                   { code: 409, message: "Conflict" }
-                when BadRequest, ActiveRecord::RecordInvalid
+                when BadRequest
                   { code: 400, message: exception.message }
-                when UnprocessableEntity
-                  { code: 422, message: "Unprocessable entity" }
+                when  ActiveRecord::RecordNotFound
+                  { code: 404, message: "Not found" }
+                when UnprocessableEntity, ActiveRecord::RecordInvalid
+                  {
+                    code: 422,
+                    message: "Unprocessable Entity",
+                    details: exception.record.errors.messages
+                  }
                 else
                   { code: 500, message: "Internal server error" }
                 end

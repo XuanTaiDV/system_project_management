@@ -2,7 +2,8 @@ module Api
   module V1
     class ProjectsController < AuthenticationController
       def index
-        render json: Project.all, each_serializer: ProjectSerializer
+        render json: Project.paginate(**pagination_params),
+               each_serializer: ProjectSerializer
       end
 
       def show
@@ -32,6 +33,12 @@ module Api
 
       def permitted_params
         params.require(:project).permit(:name, :description)
+      end
+
+      def pagination_params
+        @pagination_params ||= params.permit(:page, :per_page).to_hash
+
+        { page: 1, per_page: 100 }.with_indifferent_access.merge(**@pagination_params)
       end
     end
   end
