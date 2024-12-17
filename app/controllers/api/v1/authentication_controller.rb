@@ -6,7 +6,8 @@ module Api
       private
 
       def authenticate!
-        token = request.headers['Authorization'].split(' ').last
+        token = authorization_token
+
         raise Exceptions::Unauthorized, 'Token missing' if token.blank?
         begin
           decoded_data, _ = decode_token!(token)
@@ -18,6 +19,12 @@ module Api
 
       def decode_token!(token)
         AuthToken.decode!(token)
+      end
+
+      def authorization_token
+        request.headers['Authorization'].split(' ').last
+      rescue NoMethodError
+        raise Exceptions::Unauthorized, 'Token missing'
       end
 
       def find_user(decoded_data)

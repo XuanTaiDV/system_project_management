@@ -10,6 +10,7 @@
 #  project_id  :integer          not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  in_progress :integer          default(1)
 #
 FactoryBot.define do
   factory :task do

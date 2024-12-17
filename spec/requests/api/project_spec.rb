@@ -3,14 +3,16 @@ require 'rails_helper'
 require_relative 'shared/authorized_shared'
 
 RSpec.describe 'Projects API', type: :request do
-  include_context 'authorization'
-
   describe 'GET /api/v1/projects' do
+    it_behaves_like 'Unauthorization'
+    include_context 'authorization'
+
+    let(:http_method) { :get }
     let(:endpoint) { '/api/v1/projects' }
     let(:create_projects) { FactoryBot.create_list(:project, 100, user: user) }
     let(:page) { 1 }
     let(:per_page) { 100 }
-    subject { get endpoint, params: { page: page, per_page: per_page }, headers: headers }
+    subject { send(http_method, endpoint, params: { page: page, per_page: per_page }, headers: headers) }
 
     context 'There is no project in DB' do
       it 'should return list projects' do
@@ -40,7 +42,13 @@ RSpec.describe 'Projects API', type: :request do
   end
 
   describe 'POST /api/v1/projects' do
-    subject { post endpoint, params:, headers: headers }
+    it_behaves_like 'Unauthorization'
+    include_context 'authorization'
+
+    let(:http_method) { :post }
+    let(:params) { }
+    let(:endpoint) { '/api/v1/projects'}
+    subject { send(http_method, endpoint, params:, headers: headers) }
 
     context 'The given payload is invalid' do
       let(:endpoint) { '/api/v1/projects' }
@@ -84,7 +92,12 @@ RSpec.describe 'Projects API', type: :request do
   end
 
   describe 'GET /api/v1/projects/:id' do
-    subject { get endpoint, headers: headers }
+    it_behaves_like 'Unauthorization'
+    include_context 'authorization'
+
+    let(:endpoint) { '/api/v1/projects/1' }
+    let(:http_method) { :get }
+    subject { send(http_method, endpoint, headers: headers) }
 
     context 'There is no project with the given ID' do
       let(:endpoint) { '/api/v1/projects/1' }
@@ -111,7 +124,13 @@ RSpec.describe 'Projects API', type: :request do
   end
 
   describe 'PATCH/PUT /api/v1/projects/:id' do
-    subject { patch endpoint, params:, headers: headers }
+    include_context 'authorization'
+    it_behaves_like 'Unauthorization'
+
+    let(:endpoint) { '/api/v1/projects/1' }
+    let(:http_method) { :patch }
+
+    subject { send(http_method, endpoint, params:, headers: headers) }
     let(:params) { }
 
     context 'There is no project with the given ID' do
