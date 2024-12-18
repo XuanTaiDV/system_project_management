@@ -177,7 +177,7 @@ RSpec.describe 'Tasks API', type: :request do
     context 'Update project successfully' do
       let(:project) { FactoryBot.create(:project, user: user) }
       let(:endpoint) { "/api/v1/projects/#{project.id}" }
-      let(:params) { { project: { name: "New name" , description: 'New description' }} }
+      let(:params) { { project: { name: 'New name' , description: 'New description' }} }
       it 'should return project' do
         subject
 

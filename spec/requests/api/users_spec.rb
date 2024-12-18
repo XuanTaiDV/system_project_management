@@ -17,13 +17,11 @@ RSpec.describe 'Users API', type: :request do
       it 'creates a new user and returns the user as JSON' do
         post '/api/v1/users/register', params: valid_attributes
 
-        # Expect a successful response (status 200 or 201, depending on how your controller is set up)
         expect(response).to have_http_status(:ok)
 
-        # Expect the response body to include the user's attributes
         json_response = JSON.parse(response.body)
         expect(json_response['email']).to eq('test@example.com')
-        expect(json_response).not_to have_key('password')  # Ensure the password isn't included
+        expect(json_response).not_to have_key('password')
       end
     end
 
@@ -44,7 +42,6 @@ RSpec.describe 'Users API', type: :request do
 
           expect(response).to have_http_status(:unprocessable_entity)
 
-          # Parse the response and check if error messages are included
           json_response = JSON.parse(response.body)
           expect(json_response['message']).to include('Unprocessable Entity')
           expect(json_response['details'].keys).to include('password_confirmation')
@@ -68,7 +65,6 @@ RSpec.describe 'Users API', type: :request do
 
           expect(response).to have_http_status(:unprocessable_entity)
 
-          # Parse the response and check if error messages are included
           json_response = JSON.parse(response.body)
           expect(json_response['message']).to include('Unprocessable Entity')
           expect(json_response['details'].keys).to include('email')
@@ -86,7 +82,6 @@ RSpec.describe 'Users API', type: :request do
         password: 'password123',
       }
     end
-
 
     context 'when the request is valid' do
       it 'creates a new user and returns the token' do
